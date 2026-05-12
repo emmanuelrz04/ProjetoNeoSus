@@ -208,10 +208,12 @@ src/
  ├── pages/
  └── index.html
 ```
-# Autorres
+---
+# Autores
 
 - Emmanuel Ricardo Barros de Araujo
 
+---
 Projeto acadêmico desenvolvido para estudos em:
 
 - UX/UI Design
