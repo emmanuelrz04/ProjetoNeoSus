@@ -1,1 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUS Digital - Portal do Cidadão</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --sus-green: #00703C;
+            --sus-green-dark: #00502A;
+            --sus-green-light: #E6F2EC;
+            --gov-blue: #1B4F8A;
+            --gov-blue-dark: #0F3B66;
+            --gov-blue-light: #E8F0F8;
+            --gray-900: #1E293B;
+            --gray-700: #475569;
+            --gray-500: #94A3B8;
+            --gray-100: #F8FAFC;
+            --white: #FFFFFF;
+            --red: #B91C1C;
+            --orange: #EA580C;
+            --border: #E2E8F0;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-900);
+            line-height: 1.5;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--gov-blue);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 100;
+            font-size: 14px;
+        }
+        .skip-link:focus { top: 16px; }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--gray-900);
+            color: var(--gray-500);
+            font-size: 13px;
+            padding: 10px 0;
+        }
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .top-bar-links {
+            display: flex;
+            gap: 24px;
+        }
+        .top-bar a {
+            color: var(--gray-500);
+            text-decoration: none;
+        }
+        .top-bar a:hover {
+            color: var(--white);
+        }
+        .accessibility-tools {
+            display: flex;
+            gap: 8px;
+        }
+        .accessibility-tools button {
+            background: transparent;
+            border: 1px solid var(--gray-700);
+            color: var(--gray-500);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .accessibility-tools button:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        /* Header */
+        .main-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 32px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo a {
+            text-decoration: none;
+        }
+        .logo-sus {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--sus-green);
+            letter-spacing: -0.3px;
+        }
+        .logo-gov {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--gray-700);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn-login {
+            background: var(--gov-blue);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-login:hover {
+            background: var(--gov-blue-dark);
+        }
+        .btn-emergency {
+            background: var(--red);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding: 0 32px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .nav-links a {
+            padding: 16px 20px;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: var(--sus-green);
+            border-bottom-color: var(--sus-green);
+        }
+        .nav-links a.active {
+            color: var(--sus-green);
+            border-bottom-color: var(--sus-green);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--sus-green-light) 0%, var(--gov-blue-light) 100%);
+            padding: 56px 0;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 700;
+            color: var(--sus-green-dark);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 18px;
+            color: var(--gray-700);
+            margin-bottom: 32px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: var(--sus-green);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: var(--sus-green-dark);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--sus-green);
+            border: 1px solid var(--sus-green);
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            background: var(--white);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+        .stat-value {
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--sus-green);
+        }
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        /* Icons SVG */
+        .icon-svg {
+            width: 48px;
+            height: 48px;
+        }
+        .icon-small {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Services Section */
+        .section {
+            padding: 64px 0;
+        }
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 32px;
+            letter-spacing: -0.2px;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .service-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 24px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s;
+        }
+        .service-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--sus-green-light);
+        }
+        .service-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 16px 0 8px;
+        }
+        .service-card p {
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.4;
+        }
+
+        /* Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+        .dashboard-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .dashboard-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--white);
+        }
+        .dashboard-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .dashboard-list {
+            padding: 0;
+        }
+        .dashboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .dashboard-item:last-child {
+            border-bottom: none;
+        }
+        .item-title {
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .item-date {
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .badge-success {
+            background: var(--sus-green-light);
+            color: var(--sus-green);
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        .badge-warning {
+            background: #FEF3C7;
+            color: var(--orange);
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+
+        /* Alert */
+        .alert-card {
+            background: var(--gov-blue-light);
+            border-left: 4px solid var(--gov-blue);
+            padding: 20px 24px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .alert-content strong {
+            color: var(--gov-blue);
+            font-size: 15px;
+        }
+        .alert-content p {
+            font-size: 14px;
+            color: var(--gray-700);
+            margin-top: 4px;
+        }
+        .alert-btn {
+            background: var(--gov-blue);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Map */
+        .map-section {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .map-placeholder {
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 48px;
+            text-align: center;
+            color: var(--gray-500);
+            margin-top: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-900);
+            color: var(--gray-500);
+            padding: 56px 0 32px;
+            margin-top: 56px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .footer-col a {
+            display: block;
+            color: var(--gray-500);
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        .footer-col a:hover {
+            color: var(--white);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 32px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* SVG Icons */
+        .icon-calendar, .icon-vaccine, .icon-medicine, .icon-map, 
+        .icon-telemed, .icon-family, .icon-mental, .icon-chart {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .icon-calendar { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300703C' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM7 11h5v5H7v-5z'/%3E%3C/svg%3E"); }
+        .icon-vaccine { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300703C' viewBox='0 0 24 24'%3E%3Cpath d='M11 5.5H13V19.5H11z'/%3E%3Cpath d='M17 8h-4v2h4v8h-2v2h4v-2h-2V8zM7 8h4v2H7v8H5v-2H3v2h4V8z'/%3E%3C/svg%3E"); }
+        .icon-medicine { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300703C' viewBox='0 0 24 24'%3E%3Cpath d='M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4z'/%3E%3C/svg%3E"); }
+        .icon-map { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300703C' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E"); }
+        .icon-telemed { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300703C' viewBox='0 0 24 24'%3E%3Cpath d='M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z'/%3E%3Cpath d='M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E"); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 32px; }
+            .stats-grid { grid-template-columns: 1fr; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; }
+            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+            .main-header .container { flex-direction: column; text-align: center; }
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--gov-blue);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* High Contrast */
+        body.high-contrast {
+            background: black;
+            color: white;
+        }
+        body.high-contrast .service-card,
+        body.high-contrast .dashboard-card,
+        body.high-contrast .stats-grid {
+            background: #111;
+            border-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
+
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-links">
+                <a href="#">gov.br</a>
+                <a href="#">Acesso à Informação</a>
+                <a href="#">LGPD</a>
+                <a href="#">Ouvidoria</a>
+            </div>
+            <div class="accessibility-tools">
+                <button onclick="document.body.style.fontSize = '100%'">A</button>
+                <button onclick="document.body.style.fontSize = '120%'">A+</button>
+                <button onclick="document.body.style.fontSize = '140%'">A++</button>
+                <button onclick="toggleContrast()">Alto Contraste</button>
+                <button>LIBRAS</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="#">
+                    <div class="logo-sus">SUS Digital</div>
+                    <div class="logo-gov">Ministério da Saúde | Governo Federal</div>
+                </a>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="btn-emergency">SAMU 192 - Emergência</a>
+                <button class="btn-login">Acessar com gov.br</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <div class="nav-links">
+            <a href="#" class="active">Início</a>
+            <a href="#">Minha Saúde</a>
+            <a href="#">Agendamentos</a>
+            <a href="#">Vacinas</a>
+            <a href="#">Exames</a>
+            <a href="#">Telemedicina</a>
+            <a href="#">Unidades</a>
+            <a href="#">Família</a>
+            <a href="#">Acessibilidade</a>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-grid">
+                    <div>
+                        <h1>Cuidar da sua saúde ficou mais simples</h1>
+                        <p>Acesse seu prontuário, vacinas, exames e agendamentos em um só lugar. O novo portal SUS foi redesenhado para você, com foco em acessibilidade e humanização.</p>
+                        <div class="hero-buttons">
+                            <button class="btn-primary">Acessar minha conta</button>
+                            <button class="btn-secondary">Conhecer serviços</button>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div>
+                            <div class="stat-value">213M</div>
+                            <div class="stat-label">brasileiros atendidos</div>
+                        </div>
+                        <div>
+                            <div class="stat-value">60K+</div>
+                            <div class="stat-label">unidades de saúde</div>
+                        </div>
+                        <div>
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">cobertura nacional</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Serviços essenciais</h2>
+                <div class="cards-grid">
+                    <a href="#" class="service-card">
+                        <div class="icon-calendar"></div>
+                        <h3>Prontuário Digital</h3>
+                        <p>Histórico completo de consultas, exames e procedimentos</p>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon-vaccine"></div>
+                        <h3>Carteira de Vacinas</h3>
+                        <p>Consulte suas vacinas e baixe certificados oficiais</p>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon-calendar"></div>
+                        <h3>Agendar Consulta</h3>
+                        <p>Marque consultas e exames na unidade mais próxima</p>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon-map"></div>
+                        <h3>Encontrar Unidade</h3>
+                        <p>Localize UBS, UPAs e hospitais perto de você</p>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon-medicine"></div>
+                        <h3>Farmácia Popular</h3>
+                        <p>Medicamentos gratuitos e com desconto</p>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon-telemed"></div>
+                        <h3>Telemedicina</h3>
+                        <p>Consultas online com médicos do SUS</p>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon-mental"></div>
+                        <h3>Saúde Mental</h3>
+                        <p>Apoio psicológico e acompanhamento especializado</p>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon-family"></div>
+                        <h3>Saúde da Família</h3>
+                        <p>Gerencie as informações de seus dependentes</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="alert-card">
+                    <div class="alert-content">
+                        <strong>Vacinação contra Influenza</strong>
+                        <p>Campanha nacional de vacinação contra gripe. Procure a UBS mais próxima.</p>
+                    </div>
+                    <button class="alert-btn">Saiba mais</button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="dashboard-header">
+                            <h3>Próximas consultas</h3>
+                        </div>
+                        <div class="dashboard-list">
+                            <div class="dashboard-item">
+                                <div>
+                                    <div class="item-title">Cardiologista</div>
+                                    <div class="item-date">15 de maio de 2025 - 14h30</div>
+                                </div>
+                                <div class="badge-success">Confirmada</div>
+                            </div>
+                            <div class="dashboard-item">
+                                <div>
+                                    <div class="item-title">Exame de sangue</div>
+                                    <div class="item-date">18 de maio de 2025 - 8h00</div>
+                                </div>
+                                <div class="badge-success">Agendado</div>
+                            </div>
+                            <div class="dashboard-item">
+                                <div>
+                                    <div class="item-title">Retorno Dermatologia</div>
+                                    <div class="item-date">22 de maio de 2025 - 10h00</div>
+                                </div>
+                                <div class="badge-warning">Em breve</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="dashboard-header">
+                            <h3>Vacinas em dia</h3>
+                        </div>
+                        <div class="dashboard-list">
+                            <div class="dashboard-item">
+                                <div class="item-title">COVID-19 - 1ª dose</div>
+                                <div class="badge-success">Aplicada</div>
+                            </div>
+                            <div class="dashboard-item">
+                                <div class="item-title">COVID-19 - 2ª dose</div>
+                                <div class="badge-success">Aplicada</div>
+                            </div>
+                            <div class="dashboard-item">
+                                <div class="item-title">Febre Amarela</div>
+                                <div class="badge-success">Aplicada</div>
+                            </div>
+                            <div class="dashboard-item">
+                                <div class="item-title">Influenza 2025</div>
+                                <div class="badge-warning">Pendente</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>Medicamentos em uso</h3>
+                    </div>
+                    <div class="dashboard-list">
+                        <div class="dashboard-item">
+                            <div>
+                                <div class="item-title">Losartana 50mg</div>
+                                <div class="item-date">1 comprimido pela manhã</div>
+                            </div>
+                            <div class="badge-success">Em dia</div>
+                        </div>
+                        <div class="dashboard-item">
+                            <div>
+                                <div class="item-title">Metformina 850mg</div>
+                                <div class="item-date">1 comprimido à noite</div>
+                            </div>
+                            <div class="badge-warning">Renovar em 5 dias</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="map-section">
+                    <h3 style="margin-bottom: 16px;">Unidades de saúde próximas</h3>
+                    <p style="color: var(--gray-700); margin-bottom: 20px;">Encontre a unidade mais próxima de você com base na sua localização.</p>
+                    <div class="map-placeholder">
+                        Mapa interativo - Serviço de geolocalização integrado
+                    </div>
+                    <div style="display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
+                        <button class="btn-primary">Encontrar UBS mais próxima</button>
+                        <button class="btn-secondary">Hospitais e UPAs</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Sobre o SUS Digital</h4>
+                    <a href="#">Quem somos</a>
+                    <a href="#">Política de privacidade</a>
+                    <a href="#">Termos de uso</a>
+                    <a href="#">LGPD</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Acessibilidade</h4>
+                    <a href="#">Declaração de acessibilidade</a>
+                    <a href="#">Navegação por teclado</a>
+                    <a href="#">Leitor de telas</a>
+                    <a href="#">Portal em LIBRAS</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Canais de atendimento</h4>
+                    <a href="#">Disque Saúde 136</a>
+                    <a href="#">SAMU 192</a>
+                    <a href="#">Ouvidoria SUS</a>
+                    <a href="#">Chat online</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Institucional</h4>
+                    <a href="#">Ministério da Saúde</a>
+                    <a href="#">DATASUS</a>
+                    <a href="#">ANVISA</a>
+                    <a href="#">Portal do Governo</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Ministério da Saúde - Governo Federal. Todos os direitos reservados.</p>
+                <p>Portal SUS Digital - Versão 2.0 | WCAG 2.2 AA | Conformidade com LGPD</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+    </script>
+</body>
+</html>
