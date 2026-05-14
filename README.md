@@ -212,6 +212,7 @@ src/
 # Autores
 
 - Emmanuel Ricardo Barros de Araujo
+- Maria Eduarda Araujo de Azevedo
 
 ---
 Projeto acadêmico desenvolvido para estudos em:
