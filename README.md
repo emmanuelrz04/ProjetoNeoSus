@@ -1,6 +1,5 @@
 # Projeto Neo Sus
 ---
-
 ## Identificação do Projeto
 
 | Campo | Informação |
@@ -84,6 +83,7 @@ O sistema será reconstruído com foco em:
 - design humanizado
 - usabilidade
 
+![NeoSus](./Assets/Images/Sus1.png)
 ---
 
 # Funcionalidades Propostas
