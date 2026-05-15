@@ -121,6 +121,9 @@ O sistema será reconstruído com foco em:
 - Comandos por voz
 - Leitura automática de conteúdo
 
+---
+![NeoSus](./Assets/Images/Sus3.png)
+---
 ### Inclusão Social
 
 - Suporte completo em LIBRAS
