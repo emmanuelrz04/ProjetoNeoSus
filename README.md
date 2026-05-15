@@ -106,6 +106,7 @@ O sistema será reconstruído com foco em:
 - Gerenciamento familiar
 - Área administrativa
 
+![NeoSus](./Assets/Images/Sus2.png)
 ---
 
 ## Funcionalidades Inclusivas
